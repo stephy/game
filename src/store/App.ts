@@ -1,5 +1,6 @@
 import { observable } from "mobx";
 import Game from './Game';
+
 class App {
     @observable game: Game;
     
