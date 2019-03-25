@@ -1,5 +1,7 @@
 import Component, { ComponentType } from "./Component";
 import { action, observable } from "mobx";
+import dinospriteopen from './assets/dinospriteopen.png';
+import dinosprite from './assets/dinosprite.png';
 
 class Pytherodatyle extends Component {
   @observable loopIndex: number;
@@ -11,8 +13,8 @@ class Pytherodatyle extends Component {
         this.time = (new Date()).getTime();
         this.dHeight = 600;
         this.dWidth = 500;
-        this.sHeight = 600;
-        this.sWidth = 500;
+        this.sHeight = 300;
+        this.sWidth = 250;
     }
 
     @action
@@ -35,6 +37,20 @@ class Pytherodatyle extends Component {
     @action
     fly = () => {
       requestAnimationFrame(this.loop);
+    }
+
+    @action
+    eat = () => {
+      const image= document.createElement('img');
+      image.src = dinospriteopen;
+      this.image = image;
+    }
+
+    @action
+    continue = () => {
+      const image= document.createElement('img');
+      image.src = dinosprite;
+      this.image = image;
     }
 }
 

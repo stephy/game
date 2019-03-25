@@ -24,38 +24,41 @@ export const GlobalShortcuts =  (bindShortcut: any) => {
     if (!blockShorcut(e)) {
       e.preventDefault();
       e.stopPropagation();
-      console.log('handle space bar');
+      if (app.game.active !== undefined) {
+        app.game.active.eat();
+        setTimeout(() => {
+          if (app.game.active !== undefined) {
+            app.game.active.continue();
+          }
+          
+        }, 300);
+      }
     }
   };
 
   const handleArrowKeys = (e: KeyboardEvent, key: string) => {
     if (!blockShorcut(e)) {
       // apply number shortcuts in mixer view only
-      console.log({ key });
       switch (key) {
         case RIGHT: {
-          console.log('right');
           if (app.game.active !== undefined) {
             app.game.active.moveForward();
           }
           break;
         }
         case LEFT: {
-          console.log('left');
           if (app.game.active) {
             app.game.active.moveBackward();
           }
           break;
         }
         case UP: {
-          console.log('up');
           if (app.game.active) {
             app.game.active.moveUp();
           }
           break;
         }
         case DOWN: {
-          console.log('down');
           if (app.game.active) {
             app.game.active.moveDown();
           }

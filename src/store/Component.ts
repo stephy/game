@@ -56,6 +56,10 @@ class Component {
     this.ctx.drawImage(image, dx, dy, dWidth, dHeight, sx, sy, sWidth, sHeight);
   }
 
+  @action setImage = (image: any) => {
+    this.image = image;
+  }
+
   @action accelerate = (gravity: number) => {
     this.gravity = gravity;
   }
@@ -100,31 +104,37 @@ class Component {
 
   @action moveBackward = () => {
     //this.accelerate(-0.2);
-    this.speedX += 1;
-    this.newPos();
+    // this.speedX += 1;
+    // this.newPos();
     this.update();
   }
 
   @action moveForward = () => {
     //this.accelerate(-0.2);
-    this.speedX -= 1;
-    this.newPos();
+    // this.speedX -= 1;
+    // this.newPos();
+    //this.dx = this.dx + 1;
     this.update();
   }
 
   @action moveUp = () => {
     //this.accelerate(+0.5);
-    this.speedY += 1;
-    this.newPos();
+    // this.speedY += 1;
+    // this.newPos();
+    this.dy = this.dy + 30;
     this.update();
   }
 
   @action moveDown = () => {
     //this.accelerate(+0.5);
-    this.speedY -= 1; 
-    this.newPos();
+    // this.speedY -= 1; 
+    // this.newPos();
+    this.dy = this.dy - 30;
     this.update();
   }
+
+  eat = () => {}
+  continue = () => {}
 
 }
 export default Component;

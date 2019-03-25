@@ -17,11 +17,9 @@ class App {
     @action
     animate = () => {
       requestAnimationFrame(this.animate);
-       console.log('animate');
        const dinosaur: Component = app.game.components[ComponentOptionsType.dinosaur];
        app.game.updateGame();
-       dinosaur.moveForward();
-       
+       dinosaur.moveForward(); 
     }
 
     @action
