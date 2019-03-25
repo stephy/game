@@ -3,10 +3,12 @@ import bg from './bg.jpg';
 import { css } from 'glamor';
 import app from './store/App'
 import { GAMEBOARD_SELECTOR } from './store/Game';
-import dinosprite from './store/assets/dinosprite.png';
 import { GlobalShortcuts } from './store/Shortcuts';
 import mouseTrap from 'react-mousetrap';
-
+const slide = css.keyframes ({ 
+  '0%': {  backgroundPosition: '0 0' },
+  '100%': { backgroundPosition: '-1000px 0' }
+});
 const styles = {
   container: {
     position: 'fixed',
@@ -14,8 +16,15 @@ const styles = {
   },
   bg: {
     position: 'fixed',
-    bottom: 0,
+    top: 0,
+    left: 0,
     zIndex: 0,
+    width: '100%',
+    height: '500px',
+    background: `grey url(${bg}) repeat 0 0`,
+    boxSizing: 'border-box',
+    animation: `${slide} 20s linear infinite`,
+    backgroundSize: 'contain',
   },
   startBtn: {
     position:'absolute',
@@ -24,7 +33,7 @@ const styles = {
   gameBoard: {
     position: 'absolute',
     zIndex: 1,
-    width:'100%'
+    width:'100%',
   }
 }
 
@@ -39,7 +48,7 @@ class App extends Component {
   render() {
     return (
       <div {...css(styles.container)}>
-          <img {...css(styles.bg)} src={bg} alt="bg" />
+          <div {...css(styles.bg)} />
           <div {...css(styles.gameBoard)} id={GAMEBOARD_SELECTOR} />
          
           <button
@@ -49,17 +58,6 @@ class App extends Component {
             }}>
             start
           </button>
-          <img src={dinosprite} alt='dinosaur' />
-          <button
-           {...css(styles.startBtn, { left: 100})}
-           onClick={() => {
-            console.log('animate');
-            const dinosaur = app.game.components['dinosaur'];
-            app.game.updateGame();
-            dinosaur.moveForward();
-            app.game.updateGame();
-
-          }}>move forward</button>
       </div>
     );
   }
