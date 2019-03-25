@@ -7,6 +7,7 @@ class Game {
     @observable context?: any;
     @observable components: any;
     @observable updateStamp: any;
+    @observable active:  Component | undefined;
 
     constructor() {
       this.canvas =  document.createElement("canvas");
@@ -20,12 +21,23 @@ class Game {
       })
     }
 
+    @action setActiveComponent = (componentId: string) => {
+      if (this.components[componentId]) {
+        this.active = this.components[componentId];
+        return this.active;
+      }
+      return null;
+    }
+
     @action update = () => {
       this.updateStamp = new Date();
     }
 
-    @action addComponent = (component: Component) => {
+    @action addComponent = (component: Component, active: boolean) => {
       this.components[component.id] = component;
+      if (active) {
+        this.setActiveComponent(component.id);
+      }
     }
 
     @action removeComponent = (component: Component) => {

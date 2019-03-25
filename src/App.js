@@ -56,7 +56,7 @@ class App extends Component {
             console.log('animate');
             const dinosaur = app.game.components['dinosaur'];
             app.game.updateGame();
-            dinosaur.moveForward(10);
+            dinosaur.moveForward();
             app.game.updateGame();
 
           }}>move forward</button>

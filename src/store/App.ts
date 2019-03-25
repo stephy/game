@@ -20,7 +20,7 @@ class App {
        console.log('animate');
        const dinosaur: Component = app.game.components[ComponentOptionsType.dinosaur];
        app.game.updateGame();
-       dinosaur.moveForward(10);
+       dinosaur.moveForward();
        
     }
 
@@ -42,7 +42,7 @@ class App {
         sWidth: 500,
         sHeight: 600,
       });  
-      this.game.addComponent(component);
+      this.game.addComponent(component, true);
     }
 }
 

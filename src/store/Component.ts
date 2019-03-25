@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, computed, autorun } from "mobx";
 
 export interface ComponentType {
   id: string;
@@ -15,6 +15,12 @@ export interface ComponentType {
 }
 class Component {
   id: string;
+  @observable speedX: number;
+  @observable speedY: number;
+  @observable gravity: number;
+  @observable gravitySpeed: number;
+  @observable x: number;
+  @observable y: number;
   @observable dWidth: number;
   @observable dHeight: number;
   @observable dx: number;
@@ -26,9 +32,16 @@ class Component {
   @observable ctx: any;
   @observable image: any;
   @observable canvas: HTMLCanvasElement;
+
   constructor(props: ComponentType) {
     const { id, canvas, image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight} = props;
     this.id = id;
+    this.speedX = 0;
+    this.speedY = 0;
+    this.gravity = 0;
+    this.gravitySpeed = 0;
+    this.x = 0;
+    this.y = 0;
     this.dWidth = dWidth;
     this.dHeight = dHeight;
     this.dx = dx;
@@ -42,6 +55,27 @@ class Component {
     this.image = image;
     this.ctx.drawImage(image, dx, dy, dWidth, dHeight, sx, sy, sWidth, sHeight);
   }
+
+  @action accelerate = (gravity: number) => {
+    this.gravity = gravity;
+  }
+
+  @action newPos = () => {
+    this.gravitySpeed += this.gravity;
+    this.x += this.speedX;
+    this.y += this.speedY + this.gravitySpeed;
+    this.dx = this.x;
+    this.dy = this.y;
+    console.log('new pos:', this.dx, this.dy);
+  }
+
+  @action hitBottom = () => {
+    var rockbottom = this.canvas.height - this.dHeight;
+    if (this.y > rockbottom) {
+        this.y = rockbottom;
+        this.gravitySpeed = 0;
+    }
+}
 
   @action update = () => {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -64,35 +98,31 @@ class Component {
     this.update();
   }
 
-  @action redraw(dx: number, dy:number, dWidth:number, dHeight:number, sx:number, sy:number, sWidth:number, sHeight:number) {
-    this.dWidth = dWidth;
-    this.dHeight = dHeight;
-    this.dx = dx;
-    this.dy = dy;
-    this.sWidth = sWidth;
-    this.sHeight = sHeight;
-    this.sx = sx;
-    this.sy = sy;
+  @action moveBackward = () => {
+    //this.accelerate(-0.2);
+    this.speedX += 1;
+    this.newPos();
     this.update();
   }
 
-  @action moveForward = (distance:number) => {
-    this.dx = this.dx - distance;
+  @action moveForward = () => {
+    //this.accelerate(-0.2);
+    this.speedX -= 1;
+    this.newPos();
     this.update();
   }
 
-  @action moveBackward = (distance:number) => {
-    this.dx = this.dx + distance;
+  @action moveUp = () => {
+    //this.accelerate(+0.5);
+    this.speedY += 1;
+    this.newPos();
     this.update();
   }
 
-  @action moveUp = (distance:number) => {
-    this.dy = this.dy + distance;
-    this.update();
-  }
-
-  @action moveDown = (distance:number) => {
-    this.dy = this.dy - distance;
+  @action moveDown = () => {
+    //this.accelerate(+0.5);
+    this.speedY -= 1; 
+    this.newPos();
     this.update();
   }
 

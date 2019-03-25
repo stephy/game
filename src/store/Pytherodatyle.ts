@@ -9,12 +9,17 @@ class Pytherodatyle extends Component {
         this.fly();
         this.loopIndex = 0;
         this.time = (new Date()).getTime();
+        this.dHeight = 600;
+        this.dWidth = 500;
+        this.sHeight = 600;
+        this.sWidth = 500;
     }
 
     @action
     loop = () => {
       const now = (new Date()).getTime();
       const elapsed = now - this.time;
+      this.update();
       if (elapsed > 120) {
         this.time = now;
         this.loopIndex = this.loopIndex + 1;
@@ -22,7 +27,7 @@ class Pytherodatyle extends Component {
         if (this.loopIndex > 4) {
           this.loopIndex = 0;
         }
-        this.redraw(index*500, 0, 500, 600, 0, 0, 500, 600);
+        this.dx = index*500;
       }
       requestAnimationFrame(this.loop);
     }

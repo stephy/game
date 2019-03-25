@@ -1,4 +1,4 @@
-import app from "../App";
+import app from "./App";
 
 export const SHORTCUT_BLOCKER_CLASS = 'block-shortcut';
 const LEFT = 'left';
@@ -35,18 +35,30 @@ export const GlobalShortcuts =  (bindShortcut: any) => {
       switch (key) {
         case RIGHT: {
           console.log('right');
+          if (app.game.active !== undefined) {
+            app.game.active.moveForward();
+          }
           break;
         }
         case LEFT: {
           console.log('left');
+          if (app.game.active) {
+            app.game.active.moveBackward();
+          }
           break;
         }
         case UP: {
           console.log('up');
+          if (app.game.active) {
+            app.game.active.moveUp();
+          }
           break;
         }
         case DOWN: {
           console.log('down');
+          if (app.game.active) {
+            app.game.active.moveDown();
+          }
           break;
         }
         default:
