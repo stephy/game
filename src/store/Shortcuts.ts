@@ -3,10 +3,12 @@ import app from "../App";
 export const SHORTCUT_BLOCKER_CLASS = 'block-shortcut';
 const LEFT = 'left';
 const RIGHT = 'right';
+const UP = 'up';
+const DOWN = 'down';
 const s = 's';
 const m = 'm';
 
-export const GlobalShortcuts =  (bindShortcut) => {
+export const GlobalShortcuts =  (bindShortcut: any) => {
 
   const handleEscape = (e: KeyboardEvent) => {
     if (!blockShorcut(e)) {
@@ -29,6 +31,7 @@ export const GlobalShortcuts =  (bindShortcut) => {
   const handleArrowKeys = (e: KeyboardEvent, key: string) => {
     if (!blockShorcut(e)) {
       // apply number shortcuts in mixer view only
+      console.log({ key });
       switch (key) {
         case RIGHT: {
           console.log('right');
@@ -36,6 +39,14 @@ export const GlobalShortcuts =  (bindShortcut) => {
         }
         case LEFT: {
           console.log('left');
+          break;
+        }
+        case UP: {
+          console.log('up');
+          break;
+        }
+        case DOWN: {
+          console.log('down');
           break;
         }
         default:
@@ -58,8 +69,11 @@ export const GlobalShortcuts =  (bindShortcut) => {
 
   };
 
-  const blockShorcut = (e: KeyboardEvent) => {
-    return e.target.className === SHORTCUT_BLOCKER_CLASS;
+  const blockShorcut = (e: any) => {
+    if (e.target !== null) {
+      return e.target.className === SHORTCUT_BLOCKER_CLASS;
+    }
+    
   };
 
   (() => {
@@ -76,6 +90,8 @@ export const GlobalShortcuts =  (bindShortcut) => {
     bindShortcut('9', (e: KeyboardEvent) => handleNumberPad(e, 9));
     bindShortcut(LEFT, (e: KeyboardEvent) => handleArrowKeys(e, LEFT));
     bindShortcut(RIGHT, (e: KeyboardEvent) => handleArrowKeys(e, RIGHT));
+    bindShortcut(UP, (e: KeyboardEvent) => handleArrowKeys(e, UP));
+    bindShortcut(DOWN, (e: KeyboardEvent) => handleArrowKeys(e, DOWN));
     bindShortcut(s, (e: KeyboardEvent) => handleS(e));
     bindShortcut(m, (e: KeyboardEvent) => handleM(e));
   })();

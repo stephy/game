@@ -8,6 +8,7 @@
     "mousetrap": "^1.6.3",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-mousetrap": "^0.2.0",
     "react-scripts": "2.1.8",
     "typescript": "^3.3.4000"
   },

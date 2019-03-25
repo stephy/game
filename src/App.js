@@ -29,10 +29,12 @@ const styles = {
 }
 
 class App extends Component {
-  private shortcutBindings: any;
+  constructor(props) {
+    super(props);
+    this.shortcutBindings = props.bindShortcut;
+  }
   componentDidMount() {
-    const props = this.props;
-    GlobalShortcuts(props.store, this.shortcutBindings);
+    GlobalShortcuts(this.shortcutBindings);
   }
   render() {
     return (
@@ -51,11 +53,11 @@ class App extends Component {
           <button
            {...css(styles.startBtn, { left: 100})}
            onClick={() => {
-                   console.log('animate');
-                   const dinosaur = app.game.components['dinosaur'];
-                   app.game.updateGame();
-                   dinosaur.moveForward(10);
-                   app.game.updateGame();
+            console.log('animate');
+            const dinosaur = app.game.components['dinosaur'];
+            app.game.updateGame();
+            dinosaur.moveForward(10);
+            app.game.updateGame();
 
           }}>move forward</button>
       </div>
