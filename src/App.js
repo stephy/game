@@ -4,6 +4,9 @@ import { css } from 'glamor';
 import app from './store/App'
 import { GAMEBOARD_SELECTOR } from './store/Game';
 import dinosprite from './store/assets/dinosprite.png';
+import { GlobalShortcuts } from './store/Shortcuts';
+import mouseTrap from 'react-mousetrap';
+
 const styles = {
   container: {
     position: 'fixed',
@@ -26,6 +29,11 @@ const styles = {
 }
 
 class App extends Component {
+  private shortcutBindings: any;
+  componentDidMount() {
+    const props = this.props;
+    GlobalShortcuts(props.store, this.shortcutBindings);
+  }
   render() {
     return (
       <div {...css(styles.container)}>
@@ -54,5 +62,4 @@ class App extends Component {
     );
   }
 }
-
-export default App;
+export default mouseTrap(App);

@@ -5,6 +5,7 @@
   "dependencies": {
     "glamor": "^2.20.40",
     "mobx": "^5.9.0",
+    "mousetrap": "^1.6.3",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8",
