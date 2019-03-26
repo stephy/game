@@ -1,4 +1,4 @@
-import app from "./App";
+import game from "./Game";
 
 export const SHORTCUT_BLOCKER_CLASS = 'block-shortcut';
 const LEFT = 'left';
@@ -24,11 +24,11 @@ export const GlobalShortcuts =  (bindShortcut: any) => {
     if (!blockShorcut(e)) {
       e.preventDefault();
       e.stopPropagation();
-      if (app.game.active !== undefined) {
-        app.game.active.eat();
+      if (game.active !== undefined) {
+        game.active.eat();
         setTimeout(() => {
-          if (app.game.active !== undefined) {
-            app.game.active.continue();
+          if (game.active !== undefined) {
+            game.active.continue();
           }
           
         }, 300);
@@ -41,26 +41,26 @@ export const GlobalShortcuts =  (bindShortcut: any) => {
       // apply number shortcuts in mixer view only
       switch (key) {
         case RIGHT: {
-          if (app.game.active !== undefined) {
-            app.game.active.moveForward();
+          if (game.active !== undefined) {
+            game.active.moveForward();
           }
           break;
         }
         case LEFT: {
-          if (app.game.active) {
-            app.game.active.moveBackward();
+          if (game.active) {
+            game.active.moveBackward();
           }
           break;
         }
         case UP: {
-          if (app.game.active) {
-            app.game.active.moveUp();
+          if (game.active) {
+            game.active.moveUp();
           }
           break;
         }
         case DOWN: {
-          if (app.game.active) {
-            app.game.active.moveDown();
+          if (game.active) {
+            game.active.moveDown();
           }
           break;
         }

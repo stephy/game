@@ -18,9 +18,10 @@ class Pytherodatyle extends Component {
     }
 
     @action
-    loop = () => {
+    fly = () => {
       const now = (new Date()).getTime();
       const elapsed = now - this.time;
+      this.clear();
       this.update();
       if (elapsed > 120) {
         this.time = now;
@@ -31,12 +32,7 @@ class Pytherodatyle extends Component {
         }
         this.dx = index*500;
       }
-      requestAnimationFrame(this.loop);
-    }
-
-    @action
-    fly = () => {
-      requestAnimationFrame(this.loop);
+      requestAnimationFrame(this.fly);
     }
 
     @action

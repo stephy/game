@@ -8,17 +8,14 @@ class Game {
     @observable components: any;
     @observable updateStamp: any;
     @observable active:  Component | undefined;
+    @observable frame: number;
 
     constructor() {
       this.canvas =  document.createElement("canvas");
       this.context = undefined;
       this.components =  {};
-      this.updateStamp = new Date();
-      autorun(() => {
-        if (this.updateStamp > 0) {
-          this.updateGame();
-        }
-      })
+      this.updateStamp = undefined;
+      this.frame = 0;
     }
 
     @action setActiveComponent = (componentId: string) => {
@@ -30,7 +27,8 @@ class Game {
     }
 
     @action update = () => {
-      this.updateStamp = new Date();
+      this.updateStamp = (new Date()).getTime();
+      this.updateGame();
     }
 
     @action addComponent = (component: Component, active: boolean) => {
@@ -38,6 +36,7 @@ class Game {
       if (active) {
         this.setActiveComponent(component.id);
       }
+      this.update();
     }
 
     @action removeComponent = (component: Component) => {
@@ -61,6 +60,8 @@ class Game {
       if(gameboard) {
         gameboard.insertBefore(this.canvas, gameboard.childNodes[0]);
       }
+      this.frame = 0;
+      requestAnimationFrame(this.updateGame);
     }
 
     @action updateGame = () => {
@@ -68,7 +69,9 @@ class Game {
       Object.keys(this.components).forEach(key => {
         this.components[key].update();
       });
+      this.frame = this.frame + 1;
+      requestAnimationFrame(this.updateGame);
     }
 }
-
-export default Game;
+const game = new Game();
+export default game;

@@ -1,4 +1,5 @@
 import { observable, action, computed, autorun } from "mobx";
+import game from "./Game";
 
 export interface ComponentType {
   id: string;
@@ -70,7 +71,6 @@ class Component {
     this.y += this.speedY + this.gravitySpeed;
     this.dx = this.x;
     this.dy = this.y;
-    console.log('new pos:', this.dx, this.dy);
   }
 
   @action hitBottom = () => {
@@ -79,10 +79,12 @@ class Component {
         this.y = rockbottom;
         this.gravitySpeed = 0;
     }
-}
+  }
 
+  @action clear = () => {
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+  }
   @action update = () => {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.drawImage(this.image, this.dx, this.dy, this.dWidth, this.dHeight, this.sx, this.sy, this.sWidth, this.sHeight);
   }
 
@@ -90,8 +92,7 @@ class Component {
     this.dWidth = dWidth;
     this.dHeight = dHeight;
     this.dx = dx;
-    this.dy = dy; 
-    this.update();
+    this.dy = dy;
   }
 
   @action setSource(sx:number, sy:number, sWidth:number, sHeight:number) {
