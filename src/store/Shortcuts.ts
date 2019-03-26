@@ -48,7 +48,7 @@ export const GlobalShortcuts =  (bindShortcut: any) => {
         }
         case LEFT: {
           if (game.active) {
-            game.active.moveBackward();
+            game.active.moveBackward(10);
           }
           break;
         }

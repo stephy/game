@@ -9,6 +9,9 @@ class Game {
     @observable updateStamp: any;
     @observable active:  Component | undefined;
     @observable frame: number;
+    @observable requestAnimationId: any;
+    @observable food: string[];
+    @observable points: number;
 
     constructor() {
       this.canvas =  document.createElement("canvas");
@@ -16,6 +19,9 @@ class Game {
       this.components =  {};
       this.updateStamp = undefined;
       this.frame = 0;
+      this.requestAnimationId = undefined;
+      this.food = [];
+      this.points = 0;
     }
 
     @action setActiveComponent = (componentId: string) => {
@@ -42,8 +48,13 @@ class Game {
     @action removeComponent = (component: Component) => {
       if (this.components[component.id]) {
         delete this.components[component.id];
+        console.log('this.components:', this.components);
         this.update();
       };
+    }
+
+    @action setFoodItem = (items: string[]) => {
+      this.food = items;
     }
 
     @action clear = () => {
@@ -53,6 +64,7 @@ class Game {
     }
   
     @action start = () => {
+      this.points = 0;
       this.canvas.width = 1000;
       this.canvas.height = 1000;
       this.context = this.canvas.getContext("2d");
@@ -65,12 +77,29 @@ class Game {
     }
 
     @action updateGame = () => {
+      if (this.requestAnimationId) {
+        cancelAnimationFrame(this.requestAnimationId);
+      }
       this.clear();
       Object.keys(this.components).forEach(key => {
-        this.components[key].update();
+       this.components[key].update();
       });
       this.frame = this.frame + 1;
-      requestAnimationFrame(this.updateGame);
+      this.food.forEach(foodItem => {
+        if (this.components[foodItem] !== undefined && this.components['dinosaur'] !== undefined) {
+          const sxOffset = this.components[foodItem].sx - this.components['dinosaur'].sx;
+          const syOffset = this.components[foodItem].sy - this.components['dinosaur'].sy;
+          if (sxOffset > 130 && sxOffset < 180 &&
+            (syOffset - this.components[foodItem].sy) === this.components['dinosaur'].sy){
+            if (this.components['dinosaur'].eating) {
+              this.components[foodItem].clear();
+              this.removeComponent(this.components[foodItem]);
+            }
+          }
+        }
+      });
+
+      this.requestAnimationId = requestAnimationFrame(this.updateGame);
     }
 }
 const game = new Game();

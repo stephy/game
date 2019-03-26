@@ -4,6 +4,7 @@ import game from "./Game";
 export interface ComponentType {
   id: string;
   image: HTMLImageElement;
+  pointsWorth?: number;
   canvas: any;
   sx: number; // Optional The x-axis coordinate of the top left corner of the sub-rectangle of the source image to draw into the destination context.
   sy: number; // Optional The y-axis coordinate of the top left corner of the sub-rectangle of the source image to draw into the destination context.
@@ -33,9 +34,12 @@ class Component {
   @observable ctx: any;
   @observable image: any;
   @observable canvas: HTMLCanvasElement;
+  @observable requestAnimationId: any;
+  @observable eating: boolean;
+  @observable pointsWorth?: number;
 
   constructor(props: ComponentType) {
-    const { id, canvas, image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight} = props;
+    const { id, canvas, image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight, pointsWorth} = props;
     this.id = id;
     this.speedX = 0;
     this.speedY = 0;
@@ -54,7 +58,10 @@ class Component {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.image = image;
-    this.ctx.drawImage(image, dx, dy, dWidth, dHeight, sx, sy, sWidth, sHeight);
+    this.requestAnimationId = undefined;
+    this.eating = false;
+    this.pointsWorth = pointsWorth;
+    this.ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
   }
 
   @action setImage = (image: any) => {
@@ -82,6 +89,9 @@ class Component {
   }
 
   @action clear = () => {
+    if (this.requestAnimationId) {
+      cancelAnimationFrame(this.requestAnimationId);
+    }
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
   @action update = () => {
@@ -103,14 +113,25 @@ class Component {
     this.update();
   }
 
-  @action moveBackward = () => {
+  @action moveBackward = (value?: number) => {
     //this.accelerate(-0.2);
     // this.speedX += 1;
     // this.newPos();
+    if (value) {
+      this.sx = this.sx - value;
+    } else {
+      this.sx = this.sx - 30;
+    }
     this.update();
   }
 
-  @action moveForward = () => {
+  @action moveForward = (value?: number) => {
+    if (value) {
+      this.sx = this.sx + value;
+    } else {
+      this.sx = this.sx + 30;
+    }
+
     //this.accelerate(-0.2);
     // this.speedX -= 1;
     // this.newPos();
@@ -136,6 +157,10 @@ class Component {
 
   eat = () => {}
   continue = () => {}
+  autoScrollX = (value: number) => {
+    this.moveBackward(game.frame * 0.005);
+    this.requestAnimationId = requestAnimationFrame(this.autoScrollX);
+  }
 
 }
 export default Component;

@@ -40,6 +40,7 @@ class Pytherodatyle extends Component {
       const image= document.createElement('img');
       image.src = dinospriteopen;
       this.image = image;
+      this.eating = true;
     }
 
     @action
@@ -47,6 +48,7 @@ class Pytherodatyle extends Component {
       const image= document.createElement('img');
       image.src = dinosprite;
       this.image = image;
+      this.eating = false;
     }
 }
 
